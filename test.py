@@ -9,3 +9,4 @@ with open('.pass') as data_file:
 aaa= data['Mavrikant'].decode('base64').decode('base64').decode('base64').decode('UTF-8')
 print aaa
 print type(aaa)
+
