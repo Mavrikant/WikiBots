@@ -29,6 +29,10 @@ var/
 *.manifest
 *.spec
 
+
+# Ignore password file
+*.pass
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
