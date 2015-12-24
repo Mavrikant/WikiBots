@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import json
 
 with open(".pass") as json_file:
