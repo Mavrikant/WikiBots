@@ -2,11 +2,9 @@
 
 import json
 
+with open(".pass") as json_file:
+    json_data = json.load(json_file)
 
-with open('.pass') as data_file:
-    data = json.load(data_file)
-
-aaa= data['Mavrikant'].decode('base64').decode('base64').decode('base64').decode('UTF-8')
-print aaa
-print type(aaa)
-
+passw = json_data['Mavrikant'].decode('base64').decode('base64').decode('base64').decode('UTF-8')
+print passw
+print type(passw)
