@@ -4,7 +4,6 @@ import mavri
 import requests
 from bs4 import BeautifulSoup
 import re
-
 xx = mavri.login('tr.wikipedia', 'Mavrikant Bot')
 
 while 1:

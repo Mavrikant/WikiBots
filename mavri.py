@@ -72,6 +72,7 @@ def categories_on_page(wiki, title):
 def content_of_page(wiki, title):
     return requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
 
+
 def wbcreateclaim(entity, property, snaktype, value, xx):
     wiki = 'www.wikidata'
     params3 = '?format=json&action=query&meta=tokens'
