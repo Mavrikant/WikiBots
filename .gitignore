@@ -33,6 +33,9 @@ var/
 # Ignore password file
 *.pass
 
+#output file
+*.out
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
