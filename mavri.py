@@ -64,10 +64,13 @@ def page_clear(wiki, title, summary, xx):
     return change_page(wiki, title, '', summary, xx)
 
 
-def categories_onpage(wiki, title):
+def categories_on_page(wiki, title):
     content = requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
     return re.findall(r'\[\[\s?[Kk]ategori\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
 
+
+def content_of_page(wiki, title):
+    return requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
 
 def wbcreateclaim(entity, property, snaktype, value, xx):
     wiki = 'www.wikidata'
