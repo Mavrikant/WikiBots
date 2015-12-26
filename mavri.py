@@ -84,7 +84,7 @@ def review_diff(wiki, diff, xx):
 
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'review', 'format': 'json', 'revid': int(diff), 'token': token}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=xx.cookies)
+    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=review_cookies)
 
 
 def wbcreateclaim(entity, property, snaktype, value, xx):

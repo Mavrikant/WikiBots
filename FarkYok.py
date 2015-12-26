@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+# NOT: çalışmıyor. bdtoken hatası veriyor
 import mavri
 import requests
 from bs4 import BeautifulSoup
