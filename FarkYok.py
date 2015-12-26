@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# !/usr/bin/python
 import mavri
 import requests
 from bs4 import BeautifulSoup
