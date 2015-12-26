@@ -73,6 +73,16 @@ def content_of_page(wiki, title):
     return requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
 
 
+def review_diff(wiki, diff, xx):
+    params3 = '?format=json&action=query&meta=tokens'
+    r3 = requests.get('https://' + wiki + '.org/w/api.php' + params3, cookies=xx.cookies)
+    token = r3.json()['query']['tokens']['csrftoken']
+
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    payload = {'action': 'review', 'format': 'json', 'revid': int(diff), 'token': token}
+    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=xx.cookies)
+
+
 def wbcreateclaim(entity, property, snaktype, value, xx):
     wiki = 'www.wikidata'
     params3 = '?format=json&action=query&meta=tokens'
