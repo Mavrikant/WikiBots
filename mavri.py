@@ -74,9 +74,13 @@ def content_of_page(wiki, title):
 
 
 def review_diff(wiki, diff, xx):
+
     params3 = '?format=json&action=query&meta=tokens'
     r3 = requests.get('https://' + wiki + '.org/w/api.php' + params3, cookies=xx.cookies)
     token = r3.json()['query']['tokens']['csrftoken']
+
+    review_cookies = xx.cookies.copy()
+    review_cookies.update(r3.cookies)
 
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'review', 'format': 'json', 'revid': int(diff), 'token': token}
