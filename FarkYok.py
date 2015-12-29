@@ -18,6 +18,7 @@ while nextpage != 'DONE':
     for line in soup.find("div", {"id": "mw-content-text"}).ul.find_all('li'):
         title = line.find_all('a')[2].get('title')
         link = line.find_all('a')[2].get('href')
+        print title
         FARK = requests.get(trwiki + link, cookies=xx.cookies).text
 
         if FARK.find('<div class="mw-diff-empty">(Fark yok)</div>') != -1:
