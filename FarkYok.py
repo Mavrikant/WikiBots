@@ -25,4 +25,4 @@ while nextpage != 'DONE':
             RAPOR = '\n* [[' + title + ']] -  [[Special:Diff/' + str(diff) + ']]'
             mavri.review_diff('tr.wikipedia', diff, xx)
             mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR,
-                                     title + ' - Bot ile oto onaylanmış değişilik', xx)
+                                     ' - Bot ile oto onaylanmış değişilik', xx)
