@@ -3,10 +3,11 @@
 import re
 import requests
 import json
-
+import os
 
 def login(wiki, username):
-    with open('.pass') as data_file:
+    full_path = os.path.realpath(__file__)
+    with open(os.path.dirname(full_path) + '/.pass') as data_file:
         data = json.load(data_file)
     passw = data[username].decode('base64').decode('base64').decode('base64').decode('UTF-8')
 
