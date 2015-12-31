@@ -18,12 +18,11 @@ while nextpage != 'DONE':
     for line in soup.find("div", {"id": "mw-content-text"}).ul.find_all('li'):
         title = line.find_all('a')[2].get('title')
         link = line.find_all('a')[2].get('href')
-        print title
+        #print title
         FARK = requests.get(trwiki + link, cookies=xx.cookies).text
 
         if FARK.find('<div class="mw-diff-empty">(Fark yok)</div>') != -1:
             diff = FARK.split('<input id="mw-fr-input-oldid" type="hidden" value="')[1].split('" name="oldid" />')[0]
             RAPOR = '\n* [[' + title + ']] -  [[Special:Diff/' + str(diff) + ']]'
             mavri.review_diff('tr.wikipedia', diff, xx)
-            mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR,
-                                     ' - Bot ile oto onaylanmış değişilik', xx)
+            mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR, title + ' - Bot ile oto onaylanmış değişilik', xx)
