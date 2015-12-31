@@ -4,6 +4,10 @@ import re
 import requests
 import json
 import os
+import sys
+
+reload(sys)
+sys.setdefaultencoding('UTF8')
 
 def login(wiki, username):
     full_path = os.path.realpath(__file__)
