@@ -2,7 +2,6 @@
 # !/usr/bin/python
 from bs4 import BeautifulSoup
 import requests
-
 import mavri
 import re
 
@@ -23,5 +22,4 @@ for line in soup.find("div", {"id": "mw-content-text"}).ol.find_all('li'):
         mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/BrokenRedirects',
                                  '\n* [[' + page + ']] -> [[' + redirect + ']]',
                                  '[[' + page + ']] -> [[' + redirect + ']]', xx)
-
 exit(0)
