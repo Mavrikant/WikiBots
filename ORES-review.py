@@ -32,7 +32,6 @@ while nextpage != 'DONE':
                     'probability'][
                     'true'] * 100
             if damaging < 20 or reverted < 20:
-                print damaging
-                print reverted
+                print mavri.review_diff('tr.wikipedia', diff, xx)
 
 exit(0)
