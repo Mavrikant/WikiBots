@@ -25,11 +25,12 @@ while ticontinue != 'DONE':
         title = page['title']
         print title
         content = mavri.content_of_page('tr.wikipedia',title)
-        if re.findall(value, content)[0]:
+        try:
             id = re.findall(value, content)[0]
             entity= mavri.wikibase_item('tr.wikipedia',title)
 
             if  mavri.wbgetclaims(entity, property).text == '{"claims":{}}':
                 print mavri.wbcreateclaim(entity,property,'value', str(id), xx).text
-
+        except:
+            print 'ERROR:'+title
 exit(0)
