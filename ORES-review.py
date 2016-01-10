@@ -31,7 +31,7 @@ while nextpage != 'DONE':
                 requests.get('http://ores.wmflabs.org/scores/trwiki/reverted/' + str(diff)).json()[str(diff)][
                     'probability'][
                     'true'] * 100
-            if damaging < 20 or reverted < 20:
+            if damaging < 10 and reverted < 10:
                 mavri.review_diff('tr.wikipedia', diff, xx)
                 mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/ORES/Reviewed',
                                          '\n* [[Special:Diff/' + str(diff) + ' | ' + title + ']]', title, xx)
