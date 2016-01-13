@@ -77,6 +77,12 @@ def categories_on_page(wiki, title):
 def content_of_page(wiki, title):
     return requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
 
+def content_of_section(wiki, title, section, xx):
+    try:
+        return requests.get('https://'+wiki+'.org/w/api.php?format=json&utf8=&action=query&prop=revisions&rvprop=content&rvsection='+str(section)+'&titles='+title).json()['query']['pages'].itervalues().next()['revisions'][0]['*']
+    except:
+        return ''
+
 
 def review_diff(wiki, diff, xx):
 

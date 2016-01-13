@@ -23,14 +23,11 @@ while ticontinue != 'DONE':
     for page in allpages.json()['query']['pages'].itervalues().next()['transcludedin']:
 
         title = page['title']
-        print title
         content = mavri.content_of_page('tr.wikipedia',title)
-        try:
-            id = re.findall(value, content)[0]
-            entity= mavri.wikibase_item('tr.wikipedia',title)
+        id = re.findall(value, content)[0]
+        entity= mavri.wikibase_item('tr.wikipedia',title)
 
-            if  mavri.wbgetclaims(entity, property).text == '{"claims":{}}':
-                print mavri.wbcreateclaim(entity,property,'value', str(id), xx).text
-        except:
-            print 'ERROR:'+title
+        if  mavri.wbgetclaims(entity, property).text == '{"claims":{}}':
+            mavri.wbcreateclaim(entity,property,'value', str(id), xx)
+
 exit(0)
