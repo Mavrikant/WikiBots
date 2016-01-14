@@ -9,6 +9,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('UTF8')
 
+
 def login(wiki, username):
     full_path = os.path.realpath(__file__)
     with open(os.path.dirname(full_path) + '/.pass') as data_file:
@@ -41,7 +42,7 @@ def appendtext_on_page(wiki, title, appendtext, summary, xx):
 def wikibase_item(wiki, title):
     try:
         return requests.get(
-            'https://' + wiki + '.org/w/api.php?action=query&utf8&format=json&prop=pageprops&titles=' + title).json()[
+                'https://' + wiki + '.org/w/api.php?action=query&utf8&format=json&prop=pageprops&titles=' + title).json()[
             'query']['pages'].itervalues().next()['pageprops']['wikibase_item']
     except:
         return ''
@@ -69,6 +70,24 @@ def page_clear(wiki, title, summary, xx):
     return change_page(wiki, title, '', summary, xx)
 
 
+def section_clear(wiki, title, section, summary, xx):
+    params3 = '?format=json&action=tokens'
+    r3 = requests.get('https://' + wiki + '.org/w/api.php' + params3, cookies=xx.cookies)
+    edit_token = r3.json()['tokens']['edittoken']
+    edit_cookie = xx.cookies.copy()
+    edit_cookie.update(r3.cookies)
+
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'section': str(section), 'text': '',
+               'summary': summary, 'title': title, 'token': edit_token, 'bot': ''}
+    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+
+
+def blocked(wiki, vandal):
+    params4 = '?format=json&utf8=&action=query&list=blocks&bkprop=id%7Cuser%7Cby%7Ctimestamp%7Cexpiry%7Creason%7Crange%7Cflags&bkusers='
+    return requests.get('https://' + wiki + '.org/w/api.php' + params4 + vandal)
+
+
 def categories_on_page(wiki, title):
     content = requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
     return re.findall(r'\[\[\s?[Kk]ategori\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
@@ -77,15 +96,17 @@ def categories_on_page(wiki, title):
 def content_of_page(wiki, title):
     return requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
 
+
 def content_of_section(wiki, title, section, xx):
     try:
-        return requests.get('https://'+wiki+'.org/w/api.php?format=json&utf8=&action=query&prop=revisions&rvprop=content&rvsection='+str(section)+'&titles='+title).json()['query']['pages'].itervalues().next()['revisions'][0]['*']
+        return requests.get(
+                'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&prop=revisions&rvprop=content&rvsection=' + str(
+                        section) + '&titles=' + title).json()['query']['pages'].itervalues().next()['revisions'][0]['*']
     except:
         return ''
 
 
 def review_diff(wiki, diff, xx):
-
     params3 = '?format=json&action=query&meta=tokens'
     r3 = requests.get('https://' + wiki + '.org/w/api.php' + params3, cookies=xx.cookies)
     token = r3.json()['query']['tokens']['csrftoken']
