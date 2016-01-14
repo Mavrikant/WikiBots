@@ -1,2 +1,2 @@
 # WikiBots
-Various bots for Wikipedia works under "Mavrikant Bot" user.
+Various bots for Turkish Wikipedia works under "Mavrikant Bot" and "Ket Bot" users.
