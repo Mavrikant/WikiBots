@@ -3,7 +3,6 @@
 
 import mavri
 import datetime
-import locale
 from random import randint
 
 wiki = 'tr.wikiquote'
