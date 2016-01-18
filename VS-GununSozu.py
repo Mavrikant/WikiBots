@@ -43,4 +43,4 @@ else:  # yarın dolu
 
 Durum += ' [[Vikisöz:Günün sözü/' + yarin.strftime("%Y/%m/%d") + ' | \'\'\'' + yarin.strftime("%d.%m.%Y") + '\'\'\']]'
 
-mavri.sent_message(wiki, Log_page, Durum, Summary, xx)
+mavri.sent_message(wiki, Log_page, Durum, Summary+' (WMF-Labs)', xx)
