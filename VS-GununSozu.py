@@ -41,6 +41,6 @@ else:  # yarın dolu
     Summary = 'Olumlu'
     Durum = '\n* {{Tamam}}'
 
-Durum += ' [[Vikisöz:Günün sözü/' + yarin.strftime("%Y/%m/%d") + ' | ' + yarin.strftime("%d-%m-%Y") + ']]'
+Durum += ' [[Vikisöz:Günün sözü/' + yarin.strftime("%Y/%m/%d") + ' | '''' + yarin.strftime("%d.%m.%Y") + '''']]'
 
 mavri.sent_message(wiki, Log_page, Durum, Summary, xx)
