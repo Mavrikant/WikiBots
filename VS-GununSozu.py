@@ -30,7 +30,7 @@ if (YARIN == ''):  # yarın boş
     # Kaynak söz bul ve al
     KAYNAK = ''
     while KAYNAK == '':
-        content = mavri.content_of_page(wiki, 'Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d"))
+        KAYNAK = mavri.content_of_page(wiki, 'Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d"))
         kaynak += one_day
 
     # Kaynak söz ile yarını oluştur
