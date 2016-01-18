@@ -6,8 +6,6 @@ import datetime
 import locale
 from random import randint
 
-locale.setlocale(locale.LC_ALL, "Turkish_Turkey.1254")
-
 wiki = 'tr.wikiquote'
 xx = mavri.login(wiki, 'Mavrikant Bot')
 
