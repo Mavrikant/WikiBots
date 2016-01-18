@@ -29,6 +29,8 @@ var/
 *.manifest
 *.spec
 
+#PyCharm Project files
+.idea/
 
 # Password file
 *.pass
