@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import mavri
 import time
+
 import requests
+
+import mavri
 
 xx = mavri.login('tr.wikipedia', 'Mavrikant Bot')
 
@@ -40,4 +42,4 @@ while 1:
                    'title': title, 'token': edit_token, 'bot': ''}
         r4 = requests.post(baseurl + 'api.php', headers=headers, data=payload, cookies=edit_cookie)
 
-    time.sleep(60 * 30)
+    time.sleep(60 * 10)
