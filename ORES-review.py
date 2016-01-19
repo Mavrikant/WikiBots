@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 import mavri
 
@@ -34,6 +34,7 @@ while nextpage != 'DONE':
             if damaging < 10 and reverted < 10:
                 mavri.review_diff('tr.wikipedia', diff, xx)
                 mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/ORES/Reviewed',
-                                         '\n* [[Special:Diff/' + str(diff) + ' | ' + title + ']]', title, xx)
+                                         '\n# [[Special:Diff/' + str(diff) + ' | ' + title + ']]',
+                                         '[[Special:Diff/' + str(diff) + ' | ' + title + ']]', xx)
 
 exit(0)

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
-import mavri
 import requests
 from bs4 import BeautifulSoup
+
+import mavri
 
 xx = mavri.login('tr.wikipedia', 'Mavrikant')
 trwiki = 'https://tr.wikipedia.org'
@@ -23,8 +24,9 @@ while nextpage != 'DONE':
 
         if FARK.find('<div class="mw-diff-empty">(Fark yok)</div>') != -1:
             diff = FARK.split('<input id="mw-fr-input-oldid" type="hidden" value="')[1].split('" name="oldid" />')[0]
-            RAPOR = '\n* [[' + title + ']] -  [[Special:Diff/' + str(diff) + ']]'
+            RAPOR = '\n# [[' + title + ']] -  [[Special:Diff/' + str(diff) + ']]'
             mavri.review_diff('tr.wikipedia', diff, xx)
-            mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR, title + ' - Bot ile oto onaylanmış değişilik', xx)
+            mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR,
+                                     '[[Special:Diff/' + str(diff) + ']]', xx)
 
 exit(0)
