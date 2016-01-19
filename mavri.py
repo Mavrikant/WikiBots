@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import re
-import requests
 import json
 import os
+import re
 import sys
+
+import requests
 
 reload(sys)
 sys.setdefaultencoding('UTF8')
@@ -88,9 +89,16 @@ def blocked(wiki, vandal):
     return requests.get('https://' + wiki + '.org/w/api.php' + params4 + vandal)
 
 
-def categories_on_page(wiki, title):
-    content = requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
-    return re.findall(r'\[\[\s?[Kk]ategori\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
+def random_page(wiki):
+    return \
+        requests.get(
+            'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&list=random&rnnamespace=0').json()[
+            'query']['random'][0]['title']
+
+
+def categories_on_enwiki(title):
+    content = requests.get('https://en.wikipedia.org/w/index.php?title=' + title + '&action=raw').text
+    return re.findall(r'\[\[\s?[Cc]ategory\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
 
 
 def content_of_page(wiki, title):
@@ -206,3 +214,8 @@ def wbsetclaimvalue(claim, snaktype, value, xx):
     payload = {'action': 'wbsetclaimvalue', 'format': 'json', 'utf8': '', 'claim': claim, 'snaktype': snaktype,
                'value': '"' + value + '"', 'token': token, 'bot': ''}
     return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+
+
+def pages_on_category(wiki, category):
+    params = '?format=json&utf8=&action=query&list=categorymembers&cmtitle=' + category + '&cmlimit=500'
+    return requests.get('https://' + wiki + '.org/w/api.php' + params).json()['query']['categorymembers']
