@@ -27,6 +27,6 @@ while nextpage != 'DONE':
             RAPOR = '\n# [[' + title + ']] -  [[Special:Diff/' + str(diff) + ']]'
             mavri.review_diff('tr.wikipedia', diff, xx)
             mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR,
-                                     '[[Special:Diff/' + str(diff) + ']]', xx)
+                                     '[[Special:Diff/' + str(diff) + ' | ' + title + ']]', xx)
 
 exit(0)
