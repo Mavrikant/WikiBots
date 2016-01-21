@@ -33,8 +33,8 @@ while nextpage != 'DONE':
                     'true'] * 100
             if damaging < 10 and reverted < 10:
                 mavri.review_diff('tr.wikipedia', diff, xx)
+                text = '[[Special:Diff/' + str(diff) + ' | ' + title + ']] - damaging= %.2f - reverted= %.2f' %(damaging, reverted)
                 mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/ORES/Reviewed',
-                                         '\n# [[Special:Diff/' + str(diff) + ' | ' + title + ']]',
-                                         '[[Special:Diff/' + str(diff) + ' | ' + title + ']]', xx)
+                                         '\n# ' + text, text, xx)
 
 exit(0)
