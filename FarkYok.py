@@ -24,9 +24,8 @@ while nextpage != 'DONE':
 
         if FARK.find('<div class="mw-diff-empty">(Fark yok)</div>') != -1:
             diff = FARK.split('<input id="mw-fr-input-oldid" type="hidden" value="')[1].split('" name="oldid" />')[0]
-            RAPOR = '\n# [[' + title + ']] -  [[Special:Diff/' + str(diff) + ']]'
+            RAPOR = '[[Special:Diff/' + str(diff) + ' | ' + title + ']]'
             mavri.review_diff('tr.wikipedia', diff, xx)
-            mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', RAPOR,
-                                     '[[Special:Diff/' + str(diff) + ' | ' + title + ']]', xx)
+            mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', '\n# '+RAPOR, RAPOR, xx)
 
 exit(0)
