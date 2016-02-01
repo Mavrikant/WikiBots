@@ -10,7 +10,7 @@ xx = mavri.login(wiki, 'Mavrikant Bot')
 
 one_day = datetime.timedelta(days=1)
 now = datetime.datetime.now()
-ilk = datetime.date(2015, 1, 1)
+ilk = datetime.date(2011, 4, 1)
 bugun = datetime.date(now.year, now.month, now.day)
 yarin = bugun + one_day
 kaynak = ilk + randint(0, int(str(bugun - ilk).split(' days')[0])) * one_day
