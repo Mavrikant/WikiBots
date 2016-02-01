@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
 
-import mavri
 import datetime
 from random import randint
+
+import mavri
 
 wiki = 'tr.wikiquote'
 xx = mavri.login(wiki, 'Mavrikant Bot')
@@ -17,25 +18,24 @@ kaynak = ilk + randint(0, int(str(bugun - ilk).split(' days')[0])) * one_day
 
 Log_page = 'Kullanıcı:Mavrikant Bot/Log/Günün Sözü'
 
-
 if (yarin.strftime("%d") == '01'):  # Yeni ay temizliği
     mavri.page_clear(wiki, Log_page, 'Yeni ay temizliği', xx)
 
 YARIN = mavri.content_of_page(wiki, 'Vikisöz:Günün sözü/' + yarin.strftime("%Y/%m/%d"))
 
-if (YARIN == ''): # yarın boş
+if (YARIN == ''):  # yarın boş
     Summary = 'Olumsuz'
     Durum = '\n* {{Çapraz}}'
 
     # Kaynak söz bul ve al
-    KAYNAK = ''
+    KAYNAK = mavri.content_of_page(wiki, 'Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d"))
     while KAYNAK == '':
-        KAYNAK = mavri.content_of_page(wiki, 'Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d"))
         kaynak += one_day
+        KAYNAK = mavri.content_of_page(wiki, 'Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d"))
 
     # Kaynak söz ile yarını oluştur
     mavri.change_page(wiki, 'Vikisöz:Günün sözü/' + yarin.strftime("%Y/%m/%d"), KAYNAK,
-                       '[[Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d") + ']] sayfasından kopyalandı.', xx)
+                      '[[Vikisöz:Günün sözü/' + kaynak.strftime("%Y/%m/%d") + ']] sayfasından kopyalandı.', xx)
 
 else:  # yarın dolu
     Summary = 'Olumlu'
@@ -43,4 +43,4 @@ else:  # yarın dolu
 
 Durum += ' [[Vikisöz:Günün sözü/' + yarin.strftime("%Y/%m/%d") + ' | \'\'\'' + yarin.strftime("%d.%m.%Y") + '\'\'\']]'
 
-mavri.sent_message(wiki, Log_page, Durum, Summary+' (WMF-Labs)', xx)
+mavri.sent_message(wiki, Log_page, Durum, Summary + ' (WMF-Labs)', xx)
