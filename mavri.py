@@ -33,11 +33,10 @@ def appendtext_on_page(wiki, title, appendtext, summary, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'appendtext': appendtext,
                'summary': summary,
                'title': title, 'token': edit_token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def wikibase_item(wiki, title):
@@ -60,11 +59,11 @@ def change_page(wiki, title, text, summary, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
     payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'text': text,
                'summary': summary,
                'title': title, 'token': edit_token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def page_clear(wiki, title, summary, xx):
@@ -78,10 +77,10 @@ def section_clear(wiki, title, section, summary, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
     payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'section': str(section), 'text': '',
                'summary': summary, 'title': title, 'token': edit_token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def blocked(wiki, vandal):
@@ -122,9 +121,9 @@ def review_diff(wiki, diff, xx):
     review_cookies = xx.cookies.copy()
     review_cookies.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
     payload = {'action': 'review', 'format': 'json', 'revid': int(diff), 'token': token}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=review_cookies)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=review_cookies)
 
 
 def wbcreateclaim(entity, property, snaktype, value, xx):
@@ -135,17 +134,17 @@ def wbcreateclaim(entity, property, snaktype, value, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
     payload = {'action': 'wbcreateclaim', 'format': 'json', 'utf8': '', 'entity': entity, 'property': property,
                'snaktype': snaktype, 'value': '"' + value + '"', 'token': token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def wbgetclaims(entity, property):
     wiki = 'www.wikidata'
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
     payload = {'action': 'wbgetclaims', 'format': 'json', 'utf8': '', 'entity': entity, 'property': property}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload)
 
 
 def wbsetsitelink(entity, linksite, linktitle, xx):
@@ -156,10 +155,9 @@ def wbsetsitelink(entity, linksite, linktitle, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'wbsetsitelink', 'format': 'json', 'utf8': '', 'id': entity, 'linksite': linksite,
                'linktitle': linktitle, 'token': token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def wbmergeitems(fromid, toid, xx):
@@ -170,19 +168,18 @@ def wbmergeitems(fromid, toid, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'wbmergeitems', 'format': 'json', 'utf8': '', 'fromid': fromid, 'toid': toid, 'token': token,
                'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def wbgetlanglink(entitiy, lang):
     wiki = 'www.wikidata'
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
+
     payload = {'action': 'wbgetentities', 'format': 'json', 'utf8': '', 'ids': entitiy, 'props': 'sitelinks'}
     try:
         return \
-            requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload).json()['entities'][
+            requests.post('https://' + wiki + '.org/w/api.php', data=payload).json()['entities'][
                 entitiy][
                 'sitelinks'][lang]['title']
     except KeyError:
@@ -197,9 +194,8 @@ def wbremoveclaims(claim, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'wbremoveclaims', 'format': 'json', 'utf8': '', 'claim': claim, 'token': token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def wbsetclaimvalue(claim, snaktype, value, xx):
@@ -210,10 +206,9 @@ def wbsetclaimvalue(claim, snaktype, value, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
     payload = {'action': 'wbsetclaimvalue', 'format': 'json', 'utf8': '', 'claim': claim, 'snaktype': snaktype,
                'value': '"' + value + '"', 'token': token, 'bot': ''}
-    return requests.post('https://' + wiki + '.org/w/api.php', headers=headers, data=payload, cookies=edit_cookie)
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
 def pages_on_category(wiki, category):
