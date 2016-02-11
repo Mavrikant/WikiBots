@@ -11,7 +11,7 @@ import mavri
 wiki = 'tr.wikipedia'
 xx = mavri.login(wiki, 'KET Bot')
 title = 'Vikipedi:Kullanıcı engelleme talepleri'
-version = 'V2.2'
+version = 'V2.2.1'
 summary_ek = " (WMF-Labs, " + version + ")"
 section = 1
 mpa = dict.fromkeys(range(32))
@@ -45,7 +45,7 @@ while 1:
                 by = blocked.json()['query']['blocks'][0]['by']
                 reason = blocked.json()['query']['blocks'][0]['reason']
 
-                summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] çıkartıldı. [[Kullanıcı:' + by + '|' + by + ']] - ' + reason + summary_ek
+                summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] engellenmiş. [[Kullanıcı:' + by + '|' + by + ']] - ' + reason + summary_ek
                 mavri.section_clear(wiki, title, section, summary, xx)
 
                 message = '\n* Merhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan ' + elapsed_time + ' saat sonra [[Kullanıcı mesaj:' + by + '|' + by + ']] tarafından engellendi. Engel açıklaması:' + reason + ' Bildirimde bulunduğunuz için teşekkürler. --~~~~'
@@ -70,7 +70,7 @@ while 1:
                     summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] bildirimi zaman aşımına uğradı.' + summary_ek
                     mavri.sent_message(wiki, 'Kullanıcı mesaj:' + informer, message, summary, xx)
         else:
-            mavri.section_clear(wiki, title, section, '{{Vandal|XXXX}} içermeyen başlık kaldırıldı.' + summary_ek, xx)
+            mavri.section_clear(wiki, title, section, '{{Vandal|XXXX}} içermeyen başlık temizlendi.' + summary_ek, xx)
         section += 1
     else:
         section = 1
