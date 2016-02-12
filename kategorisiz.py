@@ -21,10 +21,10 @@ def add_category(page):
     print page
     content = mavri.content_of_page(wiki, page)
     if content:
-        # if re.findall(r'\[\[\s?' + catNS + '[^\]]*\]\]', content) != []:
-        #     content = re.sub(r'\{\{\s?[Kk]ategorisiz[^\}]*\}\}\s?\n?', '', content)
-        #     content = re.sub(r'\{\{\s?[Uu]ncategorized[^\}]*\}\}\s?\n?', '', content)
-        #     return mavri.change_page(wiki, page,content,'-Kategorisiz Şablonu', xx)
+        if re.findall(r'\[\[\s?' + catNS + '[^\]]*\]\]', content) != []:
+            content = re.sub(r'\{\{\s?[Kk]ategorisiz[^\}]*\}\}\s?\n?', '', content)
+            content = re.sub(r'\{\{\s?[Uu]ncategorized[^\}]*\}\}\s?\n?', '', content)
+            return mavri.change_page(wiki, page, content, '- Kategorisiz Şablonu', xx)
 
         entity = mavri.wikibase_item(wiki, page)
         langs = mavri.wbgetlangsofentity(entity)
