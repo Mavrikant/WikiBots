@@ -17,13 +17,14 @@ def login(wiki, username):
         data = json.load(data_file)
     passw = data[username].decode('base64').decode('base64').decode('base64').decode('UTF-8')
 
-    baseurl = 'https://' + wiki + '.org/w/'
-    login_params = '?action=login&lgname=%s&lgpassword=%s&format=json' % (username, passw)
-    r1 = requests.post(baseurl + 'api.php' + login_params)
+    payload = {'action': 'query', 'format': 'json', 'utf8': '', 'meta': 'tokens', 'type': 'login'}
+    r1 = requests.post('https://' + wiki + '.org/w/api.php', data=payload)
 
-    login_token = r1.json()['login']['token']
-    login_params2 = login_params + '&lgtoken=%s' % login_token
-    return requests.post(baseurl + 'api.php' + login_params2, cookies=r1.cookies)
+    login_token = r1.json()['query']['tokens']['logintoken']
+    payload = {'action': 'login', 'format': 'json', 'utf8': '', 'lgname': username, 'lgpassword': passw,
+               'lgtoken': login_token}
+    return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=r1.cookies)
+
 
 
 def appendtext_on_page(wiki, title, appendtext, summary, xx):
@@ -95,9 +96,12 @@ def random_page(wiki):
             'query']['random'][0]['title']
 
 
-def categories_on_enwiki(title):
-    content = requests.get('https://en.wikipedia.org/w/index.php?title=' + title + '&action=raw').text
-    return re.findall(r'\[\[\s?[Cc]ategory\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
+def categories_on_page(wiki, title):
+    catNS = requests.get(
+            'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&meta=siteinfo&siprop=namespaces').json()[
+        'query']['namespaces']['14']['*']
+    content = requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
+    return re.findall(r'\[\[\s?' + catNS + '\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
 
 
 def content_of_page(wiki, title):
@@ -173,18 +177,28 @@ def wbmergeitems(fromid, toid, xx):
     return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
-def wbgetlanglink(entitiy, lang):
+def wbgetlanglink(entity, lang):
     wiki = 'www.wikidata'
 
-    payload = {'action': 'wbgetentities', 'format': 'json', 'utf8': '', 'ids': entitiy, 'props': 'sitelinks'}
+    payload = {'action': 'wbgetentities', 'format': 'json', 'utf8': '', 'ids': entity, 'props': 'sitelinks'}
     try:
         return \
             requests.post('https://' + wiki + '.org/w/api.php', data=payload).json()['entities'][
-                entitiy][
+                entity][
                 'sitelinks'][lang]['title']
     except KeyError:
         return ''
 
+
+def wbgetlangsofentity(entity):
+    wiki = 'www.wikidata'
+
+    payload = {'action': 'wbgetentities', 'format': 'json', 'utf8': '', 'ids': entity, 'props': 'sitelinks'}
+    try:
+        content = requests.post('https://' + wiki + '.org/w/api.php', data=payload).text
+        return re.findall('\"site\":\"([^\"]*)\"', content)
+    except KeyError:
+        return ''
 
 def wbremoveclaims(claim, xx):
     wiki = 'www.wikidata'
