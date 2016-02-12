@@ -26,7 +26,6 @@ def login(wiki, username):
     return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=r1.cookies)
 
 
-
 def appendtext_on_page(wiki, title, appendtext, summary, xx):
     params3 = '?format=json&action=tokens'
     r3 = requests.get('https://' + wiki + '.org/w/api.php' + params3, cookies=xx.cookies)
@@ -100,8 +99,8 @@ def categories_on_page(wiki, title):
     catNS = requests.get(
             'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&meta=siteinfo&siprop=namespaces').json()[
         'query']['namespaces']['14']['*']
-    content = requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
-    return re.findall(r'\[\[\s?' + catNS + '\s?:\s?([^\[\|\]]*)\s?\|?[^\[\]]*\]\]', content)
+    content = content_of_page(wiki, title)
+    return re.findall(r'\[\[\s?' + catNS + '\s?:\s?([^\[\|\]]*)\s?', content)
 
 
 def content_of_page(wiki, title):

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python
 
+import random
 import re
 
 import requests
@@ -18,15 +19,36 @@ catNS = requests.get(
 
 def add_category(page):
     print page
-    if mavri.content_of_page(wiki, page):
-        ENpage = mavri.wbgetlanglink(mavri.wikibase_item(wiki, page), 'enwiki')
-        if ENpage:
-            print ENpage
-            ENcat = mavri.categories_on_enwiki(ENpage)
-            print ENcat
+    content = mavri.content_of_page(wiki, page)
+    if content:
+        # if re.findall(r'\[\[\s?' + catNS + '[^\]]*\]\]', content) != []:
+        #     content = re.sub(r'\{\{\s?[Kk]ategorisiz[^\}]*\}\}\s?\n?', '', content)
+        #     content = re.sub(r'\{\{\s?[Uu]ncategorized[^\}]*\}\}\s?\n?', '', content)
+        #     return mavri.change_page(wiki, page,content,'-Kategorisiz Şablonu', xx)
+
+        entity = mavri.wikibase_item(wiki, page)
+        langs = mavri.wbgetlangsofentity(entity)
+        langs = re.findall(r'\'([a-z]{2,3})wiki\'', str(langs))
+        if 'tr' in langs: langs.remove('tr')
+        print langs
+        if langs:
+            lang = random.choice(langs)
+            Swiki = lang + '.wikipedia'
+            Slang = lang + 'wiki'
+            print Swiki
+            print Slang
+            Spage = mavri.wbgetlanglink(entity, Slang)
+            print Spage
+            Scat = mavri.categories_on_page(Swiki, Spage)
+            print Scat
+            ScatNS = requests.get(
+                    'https://' + Swiki + '.org/w/api.php?format=json&utf8=&action=query&meta=siteinfo&siprop=namespaces').json()[
+                'query']['namespaces']['14']['*']
+
             cat_to_add = []
-            for cat in ENcat:
-                ncat = mavri.wbgetlanglink(mavri.wikibase_item('en.wikipedia', 'Category:' + cat), wikiS)
+            for cat in Scat:
+                ncat = mavri.wbgetlanglink(mavri.wikibase_item(Swiki, ScatNS + ':' + cat), 'trwiki')
+                print cat + ' -> ' + ncat
                 if ncat != '':
                     cat_to_add.insert(0, ncat)
             print cat_to_add
@@ -41,10 +63,14 @@ def add_category(page):
                 content += appendtext
                 content = re.sub(r'\{\{\s?[Kk]ategorisiz[^\}]*\}\}\s?\n?', '', content)
                 content = re.sub(r'\{\{\s?[Uu]ncategorized[^\}]*\}\}\s?\n?', '', content)
-                diff = mavri.change_page(wiki, page, content, '++' + NUM + catNS, xx).json()['edit']['newrevid']
-                mavri.appendtext_on_page(wiki, 'Kullanıcı:Mavrikant_Bot/Log/Kategorisiz',
-                                         '\n# [[Special:Diff/' + str(diff) + '|' + page + ']] (+' + NUM + ' Kategori)',
-                                         '[[Special:Diff/' + str(diff) + '|' + page + ']] (' + NUM + ' Kategori)', xx)
+                diff = \
+                    mavri.change_page(wiki, page, content, '+ ' + NUM + catNS + ', Kaynak=' + Slang, xx).json()['edit'][
+                        'newrevid']
+                mavri.appendtext_on_page(wiki, 'Kullanıcı:Mavrikant_Bot/Log/Kategorisiz', '\n# [[Special:Diff/' + str(
+                        diff) + '|' + page + ']] (+ ' + NUM + catNS + ', Kaynak=' + Slang + ')',
+                                         '[[Special:Diff/' + str(
+                                                 diff) + '|' + page + ']] (+ ' + NUM + catNS + ', Kaynak=' + Slang + ')',
+                                         xx)
             else:
                 content = mavri.content_of_page(wiki, page)
                 if re.findall(r'\[\[\s?' + catNS + '[^\]]*\]\]', content) == [] and re.findall(
@@ -65,7 +91,7 @@ def add_category(page):
                 content = re.sub(r'\{\{\s?[Uu]ncategorized[^\}]*\}\}\s?\n?', '', content)
                 diff = mavri.change_page(wiki, page,
                                          content + '\n\n{{Kategorisiz|{{kopyala:CURRENTMONTHNAME}} {{kopyala:CURRENTYEAR}}}} ',
-                                         '++Kategorisiz Şablonu', xx).json()['edit']['newrevid']
+                                         '+ Kategorisiz Şablonu', xx).json()['edit']['newrevid']
                 mavri.appendtext_on_page(wiki, 'Kullanıcı:Mavrikant_Bot/Log/Kategorisiz',
                                          '\n# [[Special:Diff/' + str(diff) + '|' + page + ']] (Kategorisiz)',
                                          '[[Special:Diff/' + str(diff) + '|' + page + ']] (Kategorisiz)', xx)
