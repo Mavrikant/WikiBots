@@ -5,7 +5,6 @@ import random
 import re
 
 import requests
-from bs4 import BeautifulSoup
 
 import mavri
 
@@ -79,7 +78,7 @@ def add_category(page):
                     content = re.sub(r'\{\{\s?[Uu]ncategorized[^\}]*\}\}\s?\n?', '', content)
                     diff = mavri.change_page(wiki, page,
                                              content + '\n\n{{Kategorisiz|{{kopyala:CURRENTMONTHNAME}} {{kopyala:CURRENTYEAR}}}} ',
-                                             '++Kategorisiz Şablonu', xx).json()['edit']['newrevid']
+                                             '+ Kategorisiz Şablonu', xx).json()['edit']['newrevid']
                     mavri.appendtext_on_page(wiki, 'Kullanıcı:Mavrikant_Bot/Log/Kategorisiz',
                                              '\n# [[Special:Diff/' + str(diff) + '|' + page + ']] (Kategorisiz)',
                                              '[[Special:Diff/' + str(diff) + '|' + page + ']] (Kategorisiz)', xx)
@@ -97,21 +96,21 @@ def add_category(page):
                                          '[[Special:Diff/' + str(diff) + '|' + page + ']] (Kategorisiz)', xx)
 
 
-# Section 1
-cats = mavri.pages_on_category(wiki, 'Kategori:Kategorisiz')
-for line in cats:
-    page = line['title']
-    add_category(page)
+# # Section 1
+# cats = mavri.pages_on_category(wiki, 'Kategori:Kategorisiz')
+# for line in cats:
+#     page = line['title']
+#     add_category(page)
 
 # Section 2
-content = requests.get('https://' + wiki + '.org/w/index.php?title=Special:UncategorizedPages&limit=500&offset=0').text
+content = requests.get(
+    'https://' + wiki + '.org/w/api.php?action=query&format=json&utf8&list=querypage&qppage=Uncategorizedpages&qplimit=500')
 datelog = 'Kullanıcı:Mavrikant_Bot/Log/Kategorisiz/Tarih'
 olddate = mavri.content_of_page(wiki, datelog)
-newdate = content.split('son güncelleme zamanı: ')[1].split('.')[0]
+newdate = content.json()['query']['querypage']['cachedtimestamp']
 
 if olddate != newdate:
     mavri.change_page(wiki, datelog, newdate, newdate, xx)
-    soup = BeautifulSoup(content, 'html.parser')
-    for line in soup.find("div", {"id": "mw-content-text"}).ol.find_all('li'):
-        page = line.find_all('a')[0].get('title')
+    for result in content.json()['query']['querypage']['results']:
+        page = result['title']
         add_category(page)
