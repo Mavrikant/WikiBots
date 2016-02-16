@@ -96,11 +96,11 @@ def add_category(page):
                                          '[[Special:Diff/' + str(diff) + '|' + page + ']] (Kategorisiz)', xx)
 
 
-# # Section 1
-# cats = mavri.pages_on_category(wiki, 'Kategori:Kategorisiz')
-# for line in cats:
-#     page = line['title']
-#     add_category(page)
+# Section 1
+cats = mavri.pages_on_category(wiki, 'Kategori:Kategorisiz')
+for line in cats:
+    page = line['title']
+    add_category(page)
 
 # Section 2
 content = requests.get(
@@ -111,6 +111,6 @@ newdate = content.json()['query']['querypage']['cachedtimestamp']
 
 if olddate != newdate:
     mavri.change_page(wiki, datelog, newdate, newdate, xx)
-    for result in content.json()['query']['querypage']['results']:
-        page = result['title']
+    for line in content.json()['query']['querypage']['results']:
+        page = line['title']
         add_category(page)
