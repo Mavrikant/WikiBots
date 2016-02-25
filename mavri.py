@@ -225,5 +225,10 @@ def wbsetclaimvalue(claim, snaktype, value, xx):
 
 
 def pages_on_category(wiki, category):
-    params = '?format=json&utf8=&action=query&list=categorymembers&cmtitle=' + category + '&cmlimit=500'
+    params = '?format=json&utf8=&action=query&list=categorymembers&cmtitle=' + category + '&cmlimit=5000'
     return requests.get('https://' + wiki + '.org/w/api.php' + params).json()['query']['categorymembers']
+
+
+def embeddedin(wiki, page):
+    params = '?format=json&utf8=&action=query&list=embeddedin&eititle=' + page + '&eilimit=5000'
+    return requests.get('https://' + wiki + '.org/w/api.php' + params).json()['query']['embeddedin']
