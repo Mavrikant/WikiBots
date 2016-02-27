@@ -123,8 +123,6 @@ def review_diff(wiki, diff, xx):
 
     review_cookies = xx.cookies.copy()
     review_cookies.update(r3.cookies)
-
-
     payload = {'action': 'review', 'format': 'json', 'revid': int(diff), 'token': token}
     return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=review_cookies)
 
