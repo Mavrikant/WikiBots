@@ -7,17 +7,19 @@ import mavri
 
 xx = mavri.login('tr.wikipedia', 'Mavrikant')
 trwiki = 'https://tr.wikipedia.org'
-nextpage = '/w/index.php?title=%C3%96zel:BekleyenDe%C4%9Fi%C5%9Fiklikler&limit=100'
+
+nextpage = '/w/index.php?title=Özel:BekleyenDeğişiklikler&dir=prev&limit=50'
 while nextpage != 'DONE':
     soup = BeautifulSoup(requests.get(trwiki + nextpage, cookies=xx.cookies).text, 'html.parser')
     try:
-        nextpage = soup.findAll("a", {"class": "mw-nextlink"})[0].get('href')
+        nextpage = soup.findAll("a", {"class": "mw-prevlink"})[0].get('href')
     except:
         nextpage = 'DONE'
 
     for line in soup.find("div", {"id": "mw-content-text"}).ul.find_all('li'):
         incele = line.find_all('a')[2].get('href')
         title = line.find_all('a')[0].get('title')
+
         incele_text = requests.get(trwiki + incele, cookies=xx.cookies).text
 
         if incele_text.find('diff-multi') == -1:
@@ -31,7 +33,9 @@ while nextpage != 'DONE':
                 requests.get('http://ores.wmflabs.org/scores/trwiki/reverted/' + str(diff)).json()[str(diff)][
                     'probability'][
                     'true'] * 100
-            if damaging < 25 and  reverted < 25:
+            print title + ': ' + str(damaging) + ' ' + str(reverted)
+            if damaging < 25 and reverted < 25:
+                print '#onayla'
                 mavri.review_diff('tr.wikipedia', diff, xx)
                 text = '[[Special:Diff/' + str(diff) + ' | ' + title + ']] - damaging= %.2f - reverted= %.2f' %(damaging, reverted)
                 mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/ORES/Reviewed', '\n# ' + text, text, xx)
