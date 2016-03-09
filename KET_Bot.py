@@ -11,7 +11,7 @@ import mavri
 wiki = 'tr.wikipedia'
 xx = mavri.login(wiki, 'KET Bot')
 title = 'Vikipedi:Kullanıcı engelleme talepleri'
-version = 'V2.2.1'
+version = 'V2.2.2'
 summary_ek = " (WMF-Labs, " + version + ")"
 section = 1
 mpa = dict.fromkeys(range(32))
@@ -48,7 +48,7 @@ while 1:
                 summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] engellenmiş. [[Kullanıcı:' + by + '|' + by + ']] - ' + reason + summary_ek
                 mavri.section_clear(wiki, title, section, summary, xx)
 
-                message = '\n* Merhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan ' + elapsed_time + ' saat sonra [[Kullanıcı mesaj:' + by + '|' + by + ']] tarafından engellendi. Engel açıklaması:' + reason + ' Bildirimde bulunduğunuz için teşekkürler. --~~~~'
+                message = '\n\n== KET Bot Bildirim ==\nMerhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan ' + elapsed_time + ' saat sonra [[Kullanıcı mesaj:' + by + '|' + by + ']] tarafından engellendi. Engel açıklaması:' + reason + ' Bildirimde bulunduğunuz için teşekkürler. --~~~~'
                 summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']], [[Kullanıcı mesaj:' + by + '|' + by + ']] tarafından engellendi.' + summary_ek
                 mavri.sent_message(wiki, 'Kullanıcı mesaj:' + informer, message, summary, xx)
             else:
@@ -59,14 +59,14 @@ while 1:
                     summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] çıkartıldı. Bildirim zaman aşımına uğradı.' + summary_ek
                     mavri.section_clear(wiki, title, section, summary, xx)
 
-                    message = '\n* Merhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan sonra 24 saat geçmesine rağmen engellenmediği için sayfadan çıkartıldı. Bildirimde bulunduğunuz için teşekkürler. --~~~~'
+                    message = '\n\n== KET Bot Bildirim ==\nMerhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan sonra 24 saat geçmesine rağmen engellenmediği için sayfadan çıkartıldı. Bildirimde bulunduğunuz için teşekkürler. --~~~~'
                     summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] bildirimi zaman aşımına uğradı.' + summary_ek
                     mavri.sent_message(wiki, 'Kullanıcı mesaj:' + informer, message, summary, xx)
                 if IP == 0 and diff.total_seconds() > 60 * 60 * 24 * 5:
                     summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] çıkartıldı. Bildirim zaman aşımına uğradı.' + summary_ek
                     mavri.section_clear(wiki, title, section, summary, xx)
 
-                    message = '\n* Merhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan sonra 5 gün geçmesine rağmen engellenmediği için sayfadan çıkartıldı. Bildirimde bulunduğunuz için teşekkürler. --~~~~'
+                    message = '\n\n== KET Bot Bildirim ==\nMerhaba. [[Özel:Katkılar/' + vandal + '|' + vandal + ']], siz bildirim yaptıktan sonra 5 gün geçmesine rağmen engellenmediği için sayfadan çıkartıldı. Bildirimde bulunduğunuz için teşekkürler. --~~~~'
                     summary = '[[Özel:Katkılar/' + vandal + '|' + vandal + ']] bildirimi zaman aşımına uğradı.' + summary_ek
                     mavri.sent_message(wiki, 'Kullanıcı mesaj:' + informer, message, summary, xx)
         else:
