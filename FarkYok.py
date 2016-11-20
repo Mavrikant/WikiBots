@@ -23,7 +23,7 @@ while nextpage != 'DONE':
         FARK = requests.get(trwiki + link, cookies=xx.cookies).text
 
         if FARK.find('<div class="mw-diff-empty">(Fark yok)</div>') != -1:
-            diff = FARK.split('<input id="mw-fr-input-oldid" type="hidden" value="')[1].split('" name="oldid" />')[0]
+            diff = FARK.split('<input id="mw-fr-input-oldid" type="hidden" value="')[1].split('" name="oldid"/>')[0]
             RAPOR = '[[Special:Diff/' + str(diff) + ' | ' + title + ']]'
             mavri.review_diff('tr.wikipedia', diff, xx)
             mavri.appendtext_on_page('tr.wikipedia', 'Kullanıcı:Mavrikant/Log/FarkYok', '\n# '+RAPOR, RAPOR, xx)
