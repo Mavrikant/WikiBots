@@ -27,7 +27,7 @@ while ticontinue != 'DONE':
 	#print title
 
 	content = mavri.content_of_page(wiki, title)
-	kaynak_sayisi= len(re.findall(ur'<\s?ref\s?\>', content))
+	kaynak_sayisi= len(re.findall(ur'\<\s?\/\s?ref\s?\>', content)) #</ref> 
 	print kaynak_sayisi 
 	if (kaynak_sayisi>0):
 		print title  
