@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# !/usr/bin/python
 
 import json
 import os
@@ -42,7 +43,7 @@ def appendtext_on_page(wiki, title, appendtext, summary, xx):
 def wikibase_item(wiki, title):
     try:
         return requests.get(
-                'https://' + wiki + '.org/w/api.php?action=query&utf8&format=json&prop=pageprops&titles=' + title).json()[
+            'https://' + wiki + '.org/w/api.php?action=query&utf8&format=json&prop=pageprops&titles=' + title).json()[
             'query']['pages'].itervalues().next()['pageprops']['wikibase_item']
     except:
         return ''
@@ -59,7 +60,6 @@ def change_page(wiki, title, text, summary, xx):
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-
     payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'text': text,
                'summary': summary,
                'title': title, 'token': edit_token, 'bot': ''}
@@ -70,17 +70,21 @@ def page_clear(wiki, title, summary, xx):
     return change_page(wiki, title, '', summary, xx)
 
 
-def section_clear(wiki, title, section, summary, xx):
+def change_section(wiki, title, section, content, summary, xx):
     params3 = '?format=json&action=tokens'
     r3 = requests.get('https://' + wiki + '.org/w/api.php' + params3, cookies=xx.cookies)
     edit_token = r3.json()['tokens']['edittoken']
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
 
-
-    payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'section': str(section), 'text': '',
+    payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '', 'section': str(section),
+               'text': content,
                'summary': summary, 'title': title, 'token': edit_token, 'bot': ''}
     return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
+
+
+def section_clear(wiki, title, section, summary, xx):
+    change_section(wiki, title, section, '', summary, xx)
 
 
 def blocked(wiki, vandal):
@@ -97,7 +101,7 @@ def random_page(wiki):
 
 def categories_on_page(wiki, title):
     catNS = requests.get(
-            'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&meta=siteinfo&siprop=namespaces').json()[
+        'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&meta=siteinfo&siprop=namespaces').json()[
         'query']['namespaces']['14']['*']
     content = content_of_page(wiki, title)
     return re.findall(r'\[\[\s?' + catNS + '\s?:\s?([^\[\|\]]*)\s?', content)
@@ -110,8 +114,8 @@ def content_of_page(wiki, title):
 def content_of_section(wiki, title, section, xx):
     try:
         return requests.get(
-                'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&prop=revisions&rvprop=content&rvsection=' + str(
-                        section) + '&titles=' + title).json()['query']['pages'].itervalues().next()['revisions'][0]['*']
+            'https://' + wiki + '.org/w/api.php?format=json&utf8=&action=query&prop=revisions&rvprop=content&rvsection=' + str(
+                section) + '&titles=' + title).json()['query']['pages'].itervalues().next()['revisions'][0]['*']
     except:
         return ''
 
@@ -134,7 +138,6 @@ def wbcreateclaim(entity, property, snaktype, value, xx):
     token = r3.json()['query']['tokens']['csrftoken']
     edit_cookie = xx.cookies.copy()
     edit_cookie.update(r3.cookies)
-
 
     payload = {'action': 'wbcreateclaim', 'format': 'json', 'utf8': '', 'entity': entity, 'property': property,
                'snaktype': snaktype, 'value': '"' + value + '"', 'token': token, 'bot': ''}
@@ -196,6 +199,7 @@ def wbgetlangsofentity(entity):
         return re.findall('\"site\":\"([^\"]*)\"', content)
     except KeyError:
         return ''
+
 
 def wbremoveclaims(claim, xx):
     wiki = 'www.wikidata'
