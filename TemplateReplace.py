@@ -20,9 +20,9 @@ def read_param(parameter):
 
 wiki = 'tr.wikipedia'
 xx = mavri.login(wiki, 'Mavrikant Bot')
-template = 'Şablon:VikiProje spor'
 VikiProje_name = "Spor"
-summary = u"VikiProje şablonu standartlaştırma"
+template = 'Şablon:VikiProje '+VikiProje_name
+summary = u"VikiProje "+VikiProje_name+" şablonu standartlaştırma"
 ticontinue = ''
 while ticontinue != 'DONE':
     allpages = requests.get(
@@ -40,7 +40,7 @@ while ticontinue != 'DONE':
             print title
             content = mavri.content_of_section('tr.wikipedia', title, 0, xx)
             # print content
-            paramet = re.findall(ur'\{\{\s*[Vv]ikiProje [Ss]por([^\}]*)\}\}', content)[0].split("|")
+            paramet = re.findall(ur'\{\{\s*[Vv]ikiProje '+VikiProje_name+ur'([^\}]*)\}\}', content)[0].split("|")
             parameters = {}
             for para in paramet:
                 if "=" in para:
@@ -49,9 +49,10 @@ while ticontinue != 'DONE':
             replacement = "{{VikiProje |Proje = " + VikiProje_name + " |Sınıf = " + read_param(
                 u'sınıf') + " |Önem = " + read_param(u'önem') + " }}"
 
-            content = re.sub(ur'\{\{\s*[Vv]ikiProje [Ss]por([^\}]*)\}\}', replacement, content)
+            content = re.sub(ur'\{\{\s*[Vv]ikiProje '+VikiProje_name+ur'([^\}]*)\}\}', replacement, content)
             content = re.sub(ur'\{\{\s*[Tt]artışma\s*\}\}\n?', '', content)
             content = '{{Tartışma}}\n' + content
+            content = re.sub(ur'\}\}\s*\n+\s*\{\{', '}}\n{{', content)
             if ns is 1:
                 entity = mavri.wikibase_item(wiki, title.split(':')[1])
                 if (mavri.wbgetclaims(entity, 'P570').text == '{"claims":{}}') and (
