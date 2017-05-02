@@ -10,9 +10,9 @@ import json
 
 def read_param(parameter):
     if parameter in parameters:
-        result = parameters[parameter].capitalize().rstrip()
-        if result is ('Sm' or 'Sl' or 'Km'):
-            result = result.upper()
+        result = parameters[parameter]
+        if not result == '':
+            result = result[0].upper() + result[1:]
         return result
     else:
         return ''
@@ -20,7 +20,7 @@ def read_param(parameter):
 
 wiki = 'tr.wikipedia'
 xx = mavri.login(wiki, 'Mavrikant Bot')
-VikiProje_name = "Spor"
+VikiProje_name = "Tarih"
 template = 'Şablon:VikiProje '+VikiProje_name
 summary = u"VikiProje "+VikiProje_name+" şablonu standartlaştırma"
 ticontinue = ''
@@ -44,8 +44,8 @@ while ticontinue != 'DONE':
             parameters = {}
             for para in paramet:
                 if "=" in para:
-                    parameters[para.split("=")[0]] = para.split("=")[1]
-
+                    parameters[para.split("=")[0].strip()] = para.split("=")[1].strip()
+                    
             replacement = "{{VikiProje |Proje = " + VikiProje_name + " |Sınıf = " + read_param(
                 u'sınıf') + " |Önem = " + read_param(u'önem') + " }}"
 
@@ -53,7 +53,8 @@ while ticontinue != 'DONE':
             content = re.sub(ur'\{\{\s*[Tt]artışma\s*\}\}\n?', '', content)
             content = '{{Tartışma}}\n' + content
             content = re.sub(ur'\}\}\s*\n+\s*\{\{', '}}\n{{', content)
-            if ns is 1:
+            
+            if ns is 1: #Tartışma sayfası ile YİB konktrolü yap
                 entity = mavri.wikibase_item(wiki, title.split(':')[1])
                 if (mavri.wbgetclaims(entity, 'P570').text == '{"claims":{}}') and (
                             '"id":"Q5"' in mavri.wbgetclaims(entity, 'P31').text):
