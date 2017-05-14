@@ -868,13 +868,13 @@ Tartışma:.az"""
 for tr_talkpage in allpages.split('\n'):
     try:
         tr_page=tr_talkpage[11:]
-        "#print tr_page
+        #print tr_page
         entity = mavri.wikibase_item('tr.wikipedia', tr_page)
-        "#print entity
+        print entity
         en_page = mavri.wbgetlanglink(entity, 'enwiki')
         en_talkpage = 'Talk:'+en_page
-        "#print en_talkpage
-        content = requests.get('https://en.wikipedia.org/wiki/'+en_talkpage)
+        print en_talkpage
+        content = requests.get('https://en.wikipedia.org/wiki/'+en_talkpage).text
         if "WikiProject Azerbaijan articles" not in content:
             print tr_talkpage
             text = '\n# [['+tr_talkpage+']]'
