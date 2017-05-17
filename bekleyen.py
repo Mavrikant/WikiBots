@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import time
-
 import requests
-
 import mavri
 
-xx = mavri.login('tr.wikipedia', 'Mavrikant Bot')
+wiki='tr.wikipedia'
+xx = mavri.login(wiki, 'Mavrikant Bot')
 
-baseurl = 'https://tr.wikipedia.org/w/'
-title = 'Kullanıcı:Mavrikant_Bot/Bekleyen'
-page = 'https://tr.wikipedia.org/wiki/%C3%96zel:Do%C4%9Frulama%C4%B0statistikleri'
+baseurl = u'https://tr.wikipedia.org/w/'
+title = u'Kullanıcı:Mavrikant_Bot/Bekleyen'
+title2=u'Şablon:BEKLEYENSAYISI'
+page = u'https://tr.wikipedia.org/wiki/Özel:Doğrulamaİstatistikleri'
 oldtimee = u'empty'
 
 while 1:
@@ -26,20 +26,10 @@ while 1:
 
     if (oldtimee != timee):
         oldtimee = timee
+        appendtext = '\n* ' + bekleyentext + ' (UTC)\n'
+        summary = bekleyentext + ' (WMF Labs)'
+        mavri.appendtext_on_page(wiki, title, appendtext, summary, xx):
+        mavri.change_page(wiki, title2, number, summary, xx):        
 
-        # get edit token2
-        params3 = '?format=json&action=tokens'
-        r3 = requests.get(baseurl + 'api.php' + params3, cookies=xx.cookies)
-        edit_token = r3.json()['tokens']['edittoken']
-
-        edit_cookie = xx.cookies.copy()
-        edit_cookie.update(r3.cookies)
-
-        # save action
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-        payload = {'action': 'edit', 'assert': 'user', 'format': 'json', 'utf8': '',
-                   'appendtext': '\n* ' + bekleyentext + ' (UTC)\n', 'summary': bekleyentext + ' (WMF Labs)',
-                   'title': title, 'token': edit_token, 'bot': ''}
-        r4 = requests.post(baseurl + 'api.php', headers=headers, data=payload, cookies=edit_cookie)
 
     time.sleep(60 * 10)
