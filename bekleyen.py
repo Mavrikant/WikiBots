@@ -28,8 +28,8 @@ while 1:
         oldtimee = timee
         appendtext = '\n* ' + bekleyentext + ' (UTC)\n'
         summary = bekleyentext + ' (WMF Labs)'
-        mavri.appendtext_on_page(wiki, title, appendtext, summary, xx):
-        mavri.change_page(wiki, title2, number, summary, xx):        
+        mavri.appendtext_on_page(wiki, title, appendtext, summary, xx)
+        mavri.change_page(wiki, title2, number, summary, xx)
 
 
     time.sleep(60 * 10)
