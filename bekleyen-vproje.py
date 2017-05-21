@@ -77,10 +77,10 @@ while nextpage != 'DONE':
     #nextpage = 'DONE'
     #print results
 
-    for project in results:
-        content='\'\'\'Güncellenme tarihi:\'\'\' {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}} {{subst:CURRENTDAYNAME}} {{subst:CURRENTTIME}}'
-        for title in results[project]:
-            content=content+'\n# [['+title+']] ([https://tr.wikipedia.org/w/index.php?title='+title.replace(" ", "_")+'&action=history geçmiş])'
+for project in results:
+    content='\'\'\'Güncellenme tarihi:\'\'\' {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}} {{subst:CURRENTDAYNAME}} {{subst:CURRENTTIME}}'
+    for title in results[project]:
+        content=content+'\n# [['+title+']] ([https://tr.wikipedia.org/w/index.php?title='+title.replace(" ", "_")+'&action=history geçmiş])'
 
-        mavri.change_page(wiki, 'User:Mavrikant Bot/Bekleyen/Proje/'+project, content, 'Güncelleme', xx)
+    mavri.change_page(wiki, 'User:Mavrikant Bot/Bekleyen/Proje/'+project, content, 'Güncelleme', xx)
 exit(0)
