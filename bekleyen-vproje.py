@@ -55,14 +55,14 @@ u"İstanbul": [],
 u"İsviçre": []
 }
 
-nextpage = '.org/w/index.php?title=Özel:BekleyenDeğişiklikler&dir=prev&limit=50'
+nextpage = '.org/w/index.php?title=Özel:BekleyenDeğişiklikler&dir=prev&limit=100'
 while nextpage != 'DONE':
     soup = BeautifulSoup(requests.get('https://'+wiki + nextpage, cookies=xx.cookies).text, 'html.parser')
     try:
         nextpage = soup.findAll("a", {"class": "mw-prevlink"})[0].get('href')
     except:
         nextpage = 'DONE'
-
+    print nextpage
     for line in soup.find("div", {"id": "mw-content-text"}).ul.find_all('li'):
         title = line.find_all('a')[0].get('title')
         incele = line.find_all('a')[2].get('href')
