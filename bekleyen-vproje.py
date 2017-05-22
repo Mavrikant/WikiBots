@@ -55,9 +55,9 @@ u"İstanbul": [],
 u"İsviçre": []
 }
 
-nextpage = '.org/w/index.php?title=Özel:BekleyenDeğişiklikler&dir=prev&limit=100'
+nextpage = '/w/index.php?title=Özel:BekleyenDeğişiklikler&dir=prev&limit=100'
 while nextpage != 'DONE':
-    soup = BeautifulSoup(requests.get('https://'+wiki + nextpage, cookies=xx.cookies).text, 'html.parser')
+    soup = BeautifulSoup(requests.get('https://'+wiki +'.org'+ nextpage, cookies=xx.cookies).text, 'html.parser')
     try:
         nextpage = soup.findAll("a", {"class": "mw-prevlink"})[0].get('href')
     except:
@@ -78,9 +78,9 @@ while nextpage != 'DONE':
     #print results
 
 for project in results:
-    content='\'\'\'Güncellenme tarihi:\'\'\' {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}} {{subst:CURRENTDAYNAME}} {{subst:CURRENTTIME}}'
+    content='\'\'\'Güncellenme tarihi:\'\'\' {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}} {{subst:CURRENTDAYNAME}} {{subst:CURRENTTIME}} (UTC)'
     for title in results[project]:
-        content=content+'\n# [['+title+']] ([https://tr.wikipedia.org/w/index.php?title='+title.replace(" ", "_")+'&action=history geçmiş])'
+        content=content+'\n# [['+title+']] ({{Geçmiş|'+title+'|geçmiş}})'
 
     mavri.change_page(wiki, 'User:Mavrikant Bot/Bekleyen/Proje/'+project, content, 'Güncelleme', xx)
 exit(0)
