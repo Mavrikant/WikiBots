@@ -13,10 +13,12 @@ u"10K": [],
 u"Antarktika": [],
 u"Azerbaycan": [],
 u"Balkanlar": [],
+u"Breaking Bad": [],
 u"Bilim": [],
 u"Buffy evreni": [],
 u"Din": [],
 u"Edebiyat": [],
+u"Elektronik sporlar": [],
 u"Eurovision": [],
 u"Fransa": [],
 u"Futbol": [],
@@ -52,7 +54,8 @@ u"Veteriner Tıp": [],
 u"Çin": [],
 u"İnternet": [],
 u"İstanbul": [],
-u"İsviçre": []
+u"İsviçre": [],
+u"Diğer": []
 }
 
 nextpage = '/w/index.php?title=Özel:BekleyenDeğişiklikler&dir=prev&limit=100'
@@ -73,7 +76,10 @@ while nextpage != 'DONE':
         print title
         print projects
         for project in projects:
-            results[project.strip()].append(title)
+            try:
+                results[project.strip()].append(title)
+            except:
+                results[u"Diğer"].append(title)
     #nextpage = 'DONE'
     #print results
 
