@@ -72,8 +72,7 @@ while nextpage != 'DONE':
     for line in soup.find("div", {"id": "mw-content-text"}).ul.find_all('li'):
         title = line.find_all('a')[0].get('title')
         incele = line.find_all('a')[2].get('href')
-        fark = line.find_all('span')[0].text
-
+        fark = re.findall(ur'bayt">([^<]*)<',str(line))
         talk_page="Talk:"+title
 
         content = mavri.content_of_section(wiki, talk_page, 0, xx)
