@@ -68,28 +68,28 @@ while nextpage != 'DONE':
         nextpage = soup.findAll("a", {"class": "mw-prevlink"})[0].get('href')
     except:
         nextpage = 'DONE'
-    print nextpage
+
     for line in soup.find("div", {"id": "mw-content-text"}).ul.find_all('li'):
         title = line.find_all('a')[0].get('title')
         incele = line.find_all('a')[2].get('href')
+        fark = line.find_all('span')[0].text
+
         talk_page="Talk:"+title
 
         content = mavri.content_of_section(wiki, talk_page, 0, xx)
         projects = re.findall(ur'\{\{\s*[Vv]ikiProje\s*\|\s*[Pp]roje\s*\=\s*([^\|]*)', content)
-        print title
-        print projects
+
         for project in projects:
             try:
-                results[project.strip()].append(title)
+                results[project.strip()].append([title, fark, incele])
             except:
-                results[u"Diğer"].append(title)
-    #nextpage = 'DONE'
-    #print results
+                results[u"Diğer"].append([title, fark, incele])
+
 
 for project in results:
     content='\'\'\'Güncellenme tarihi:\'\'\' {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}} {{subst:CURRENTDAYNAME}} {{subst:CURRENTTIME}} (UTC)'
-    for title in results[project]:
-        content=content+'\n# [['+title+']] ({{Geçmiş|'+title+'|geçmiş}})'
-
+    for page in results[project]:
+        content=content+'\n# [['+page[0]+']] ({{Geçmiş|'+page[0]+'|geçmiş}}) '+page[1]+' ([https://tr.wikipedia.org'+ page[2]+' incele])'
+    
     mavri.change_page(wiki, 'User:Mavrikant Bot/Bekleyen/Proje/'+project, content, 'Güncelleme', xx)
 exit(0)
