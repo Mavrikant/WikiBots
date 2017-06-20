@@ -85,7 +85,7 @@ while nextpage != 'DONE':
         for diff in reversed(diff_ids):
             damaging = requests.get('http://ores.wmflabs.org/scores/trwiki/damaging/' + str(diff)).json()[str(diff)]['probability']['true'] * 100
             reverted = requests.get('http://ores.wmflabs.org/scores/trwiki/reverted/' + str(diff)).json()[str(diff)]['probability']['true'] * 100
-            log = '[[Special:Diff/' + str(diff) + ' | ' + title + ']] - damaging= %.2f - reverted= %.2f' % (damaging, reverted)
+            log = '[[Special:Diff/' + str(diff) + ' | ' + title + ']] - damaging= {0:.2f} - reverted= {1:.2f}'.format(damaging, reverted)
             print log
             if damaging < threshold and reverted < threshold:
                 mavri.review_diff('tr.wikipedia', diff, xx)
