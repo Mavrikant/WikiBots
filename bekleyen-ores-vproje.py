@@ -7,7 +7,7 @@ import mavri
 
 wiki = 'tr.wikipedia'
 trwiki = 'https://tr.wikipedia.org'
-xx = mavri.login(wiki, 'Mavrikant Bot')
+xx = mavri.login(wiki, 'Mavrikant')
 
 results = {
     u"10K": [],
@@ -93,7 +93,6 @@ while nextpage != 'DONE':
             else:
                 break
 
-
         content = mavri.content_of_section(wiki, talk_page, 0, xx)
         projects = re.findall(ur'\{\{\s*[Vv]ikiProje\s*\|\s*[Pp]roje\s*\=\s*([^\|]*)', content)
 
@@ -103,6 +102,8 @@ while nextpage != 'DONE':
             except:
                 results[u"Diğer"].append([title, fark, incele])
 
+# Report pending change on every project
+xx = mavri.login(wiki, 'Mavrikant Bot')
 for project in results:
     content = '\'\'\'Güncellenme tarihi:\'\'\' {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}} {{subst:CURRENTDAYNAME}} {{subst:CURRENTTIME}} (UTC)'
     for page in results[project]:
