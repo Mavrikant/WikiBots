@@ -23,7 +23,7 @@ if (yarin.strftime("%d") == '01'):  # Yeni ay temizliği
 
 YARIN = mavri.content_of_page(wiki, 'Şablon:GM/' + yarin.strftime("%Y-%m-%d"))
 
-if (YARIN == ''):  # yarın boş
+if (YARIN == '' or YARIN.find('Wikimedia Error') != -1):  # yarın boş
     Summary = 'Olumsuz'
     Durum = '\n* {{Çapraz}}'
 
