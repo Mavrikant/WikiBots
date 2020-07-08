@@ -108,8 +108,11 @@ def categories_on_page(wiki, title):
 
 
 def content_of_page(wiki, title):
-    return requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw').text
-
+    page= requests.get('https://' + wiki + '.org/w/index.php?title=' + title + '&action=raw')
+    if ("<title>Wikimedia Error</title>" in page.text):
+        return ""
+    else:
+        return page.text
 
 def content_of_section(wiki, title, section, xx):
     try:
