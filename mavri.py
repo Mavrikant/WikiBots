@@ -16,7 +16,7 @@ def login(wiki, username):
     full_path = os.path.realpath(__file__)
     with open(os.path.dirname(full_path) + '/.pass') as data_file:
         data = json.load(data_file)
-    passw = data[username].decode('base64').decode('base64').decode('base64').decode('UTF-8')
+    passw = data[username]
 
     payload = {'action': 'query', 'format': 'json', 'utf8': '', 'meta': 'tokens', 'type': 'login'}
     r1 = requests.post('https://' + wiki + '.org/w/api.php', data=payload)
@@ -229,14 +229,14 @@ def wbsetclaimvalue(claim, snaktype, value, xx):
     return requests.post('https://' + wiki + '.org/w/api.php', data=payload, cookies=edit_cookie)
 
 
-def pages_on_category(wiki, category):
+def pages_on_category(wiki, category,xx={}):
     params = '?format=json&utf8=&action=query&list=categorymembers&cmtitle=' + category + '&cmlimit=5000'
-    return requests.get('https://' + wiki + '.org/w/api.php' + params).json()['query']['categorymembers']
+    return requests.get('https://' + wiki + '.org/w/api.php' + params, cookies=xx.cookies).json()['query']['categorymembers']
 
 
-def embeddedin(wiki, page):
-    params = '?format=json&utf8=&action=query&list=embeddedin&eititle=' + page + '&eilimit=5000'
-    return requests.get('https://' + wiki + '.org/w/api.php' + params).json()['query']['embeddedin']
+def embeddedin(wiki, page,xx={}):
+    params = '?format=json&utf8=&action=query&list=embeddedin&eititle=' + page + '&eilimit=50000'
+    return requests.get('https://' + wiki + '.org/w/api.php' + params, cookies=xx.cookies).json()['query']['embeddedin']
 
 def move_page(wiki, From, To, reason, xx ):
     params3 = '?format=json&action=query&meta=tokens'
